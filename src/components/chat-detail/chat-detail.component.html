@@ -1,0 +1,46 @@
+<div class="absolute inset-0 bg-gray-100 dark:bg-slate-900 z-30 flex flex-col h-screen w-full max-w-md mx-auto font-sans">
+  <!-- Header -->
+  <header class="flex items-center p-3 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm sticky top-0">
+    <button (click)="onClose()" class="text-2xl text-gray-500 dark:text-gray-400 hover:text-rose-500 transition-colors p-2 rounded-full">
+      <i class="fa-solid fa-chevron-left"></i>
+    </button>
+    <img [ngSrc]="pet().imageUrl" width="40" height="40" class="rounded-full object-cover ml-2" [alt]="pet().name">
+    <h1 class="ml-3 text-lg font-bold text-gray-800 dark:text-white">{{ pet().name }}</h1>
+  </header>
+
+  <!-- Messages -->
+  <main #chatContainer class="flex-grow p-4 overflow-y-auto space-y-4">
+    @for (message of messages(); track $index) {
+      <div class="flex" [class.justify-end]="message.sender === 'user'" [class.justify-start]="message.sender === 'pet'">
+        <div 
+          class="max-w-xs lg:max-w-md px-4 py-2 rounded-2xl"
+          [class.bg-rose-500]="message.sender === 'user'"
+          [class.text-white]="message.sender === 'user'"
+          [class.bg-gray-200]="message.sender === 'pet'"
+          [class.dark:bg-gray-700]="message.sender === 'pet'"
+          [class.text-gray-800]="message.sender === 'pet'"
+          [class.dark:text-gray-200]="message.sender === 'pet'">
+          <p class="text-sm">{{ message.text }}</p>
+        </div>
+      </div>
+    }
+  </main>
+
+  <!-- Message Input -->
+  <footer class="p-2 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 sticky bottom-0">
+    <form (ngSubmit)="sendMessage()" class="flex items-center space-x-2">
+      <input 
+        [formControl]="messageControl" 
+        type="text" 
+        placeholder="Escribe un mensaje..." 
+        class="flex-grow px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-transparent rounded-full focus:outline-none focus:ring-2 focus:ring-rose-500 text-gray-900 dark:text-gray-100"
+        autocomplete="off">
+      <button 
+        type="submit" 
+        [disabled]="messageControl.invalid" 
+        class="h-10 w-10 bg-rose-500 text-white rounded-full flex-shrink-0 flex items-center justify-center text-lg hover:bg-rose-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+        <i class="fa-solid fa-paper-plane"></i>
+      </button>
+    </form>
+  </footer>
+</div>

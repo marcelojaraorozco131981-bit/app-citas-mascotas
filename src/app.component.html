@@ -1,0 +1,85 @@
+@switch (view()) {
+  @case ('swiping') {
+    <div class="flex flex-col h-screen w-full max-w-md mx-auto font-sans">
+      <!-- Header -->
+      <header class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+        <button (click)="openProfile()" class="text-2xl text-gray-400 hover:text-rose-500 transition-colors">
+          <i class="fa-solid fa-user-circle"></i>
+        </button>
+        <div class="flex items-center space-x-1 text-2xl font-bold text-rose-500">
+          <i class="fa-solid fa-paw"></i>
+          <h1>PawsConnect</h1>
+        </div>
+        <button (click)="showChatList()" class="text-2xl text-gray-400 hover:text-rose-500 transition-colors">
+          <i class="fa-solid fa-message"></i>
+        </button>
+      </header>
+
+      <!-- Main Content: Card Stack -->
+      <main class="relative flex-grow flex items-center justify-center p-4">
+        @if (pets().length > 0) {
+          <div class="relative w-full h-[70vh] max-h-[600px]">
+            <!-- Next Card (background) -->
+            @if (nextPet()) {
+              <div class="absolute inset-0 transform scale-95 opacity-75">
+                <app-pet-card [pet]="nextPet()!"></app-pet-card>
+              </div>
+            } @else {
+               <div class="absolute inset-0 bg-gray-200 dark:bg-gray-800 rounded-2xl shadow-lg flex items-center justify-center"></div>
+            }
+
+            <!-- Top Card -->
+            @if (currentPet()) {
+              <div class="absolute inset-0 swipe-card" [class]="swipeClass()">
+                <app-pet-card [pet]="currentPet()!"></app-pet-card>
+              </div>
+            }
+          </div>
+        } @else {
+          <!-- Out of pets view -->
+          <div class="text-center text-gray-500 dark:text-gray-400">
+            <i class="fa-solid fa-heart-crack text-6xl mb-4"></i>
+            <h2 class="text-2xl font-bold mb-2">¡Eso es todo por ahora!</h2>
+            <p>Has visto todas las mascotas en tu área. Vuelve más tarde para ver nuevos amigos peludos.</p>
+          </div>
+        }
+      </main>
+
+      <!-- Footer Actions -->
+      @if (pets().length > 0) {
+        <footer class="flex items-center justify-around p-4">
+          <button (click)="swipe('left')" [disabled]="isSwiping()" class="h-20 w-20 rounded-full bg-white dark:bg-gray-700 text-yellow-500 shadow-xl flex items-center justify-center text-4xl transform hover:scale-110 transition-transform duration-200 disabled:opacity-50">
+            <i class="fa-solid fa-star"></i>
+          </button>
+          <button (click)="swipe('left')" [disabled]="isSwiping()" class="h-24 w-24 rounded-full bg-white dark:bg-gray-700 text-red-500 shadow-xl flex items-center justify-center text-5xl transform hover:scale-110 transition-transform duration-200 disabled:opacity-50">
+            <i class="fa-solid fa-times"></i>
+          </button>
+          <button (click)="swipe('right')" [disabled]="isSwiping()" class="h-24 w-24 rounded-full bg-white dark:bg-gray-700 text-green-500 shadow-xl flex items-center justify-center text-5xl transform hover:scale-110 transition-transform duration-200 disabled:opacity-50">
+            <i class="fa-solid fa-heart"></i>
+          </button>
+          <button (click)="swipe('right')" [disabled]="isSwiping()" class="h-20 w-20 rounded-full bg-white dark:bg-gray-700 text-purple-500 shadow-xl flex items-center justify-center text-4xl transform hover:scale-110 transition-transform duration-200 disabled:opacity-50">
+            <i class="fa-solid fa-bolt"></i>
+          </button>
+        </footer>
+      }
+    </div>
+  }
+  @case ('chatList') {
+    <app-chat-list (close)="showSwiping()" (selectChat)="openChat($event)"></app-chat-list>
+  }
+  @case ('chatDetail') {
+    @if(activeChatPet(); as pet) {
+      <app-chat-detail [pet]="pet" (close)="showChatList()"></app-chat-detail>
+    }
+  }
+}
+
+
+<!-- Modals -->
+@if (lastMatch()) {
+  <app-match-modal [pet]="lastMatch()!" (close)="closeMatchModal()" (sendMessage)="openChatFromMatch()"></app-match-modal>
+}
+
+@if (isProfileOpen()) {
+  <app-user-profile [userPet]="userPet()" (close)="closeProfile()" (save)="saveProfile($event)"></app-user-profile>
+}

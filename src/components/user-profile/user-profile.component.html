@@ -1,0 +1,38 @@
+<div class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 animate-fade-in" (click)="onClose()">
+  <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 max-w-md w-full mx-4 transform scale-100 animate-zoom-in" (click)="$event.stopPropagation()">
+    <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-6">El Perfil de tu Mascota</h2>
+
+    <form [formGroup]="profileForm" (ngSubmit)="onSave()">
+      <div class="space-y-4">
+        <div>
+          <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nombre</label>
+          <input type="text" id="name" formControlName="name" class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-rose-500 focus:border-rose-500 sm:text-sm text-gray-900 dark:text-gray-100">
+        </div>
+        
+        <div>
+          <label for="age" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Edad</label>
+          <input type="number" id="age" formControlName="age" class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-rose-500 focus:border-rose-500 sm:text-sm text-gray-900 dark:text-gray-100">
+        </div>
+        
+        <div>
+          <label for="breed" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Raza</label>
+          <input type="text" id="breed" formControlName="breed" class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-rose-500 focus:border-rose-500 sm:text-sm text-gray-900 dark:text-gray-100">
+        </div>
+
+        <div>
+            <label for="bio" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Biografía</label>
+            <textarea id="bio" formControlName="bio" rows="3" class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-rose-500 focus:border-rose-500 sm:text-sm text-gray-900 dark:text-gray-100"></textarea>
+        </div>
+      </div>
+      
+      <div class="mt-8 flex justify-end space-x-3">
+        <button type="button" (click)="onClose()" class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-600 rounded-md hover:bg-gray-200 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 dark:focus:ring-offset-gray-800">
+          Cancelar
+        </button>
+        <button type="submit" [disabled]="profileForm.invalid" class="px-4 py-2 text-sm font-medium text-white bg-rose-500 rounded-md hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500 dark:focus:ring-offset-gray-800 disabled:opacity-50 disabled:cursor-not-allowed">
+          Guardar Cambios
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

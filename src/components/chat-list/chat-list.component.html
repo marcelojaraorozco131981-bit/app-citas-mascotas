@@ -1,0 +1,38 @@
+<div class="absolute inset-0 bg-gray-100 dark:bg-slate-900 z-20 flex flex-col h-screen w-full max-w-md mx-auto font-sans">
+  <!-- Header -->
+  <header class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-800 shadow-sm sticky top-0">
+    <button (click)="onClose()" class="text-2xl text-gray-500 dark:text-gray-400 hover:text-rose-500 transition-colors">
+      <i class="fa-solid fa-chevron-left"></i>
+    </button>
+    <h1 class="text-xl font-bold text-gray-800 dark:text-white">Matches</h1>
+    <div class="w-8"></div> <!-- Spacer -->
+  </header>
+
+  <!-- Chat List -->
+  <main class="flex-grow overflow-y-auto">
+    @if (matches().length > 0) {
+      <div class="divide-y divide-gray-200 dark:divide-gray-700">
+        @for (match of matches(); track match.id) {
+          <div (click)="onSelectChat(match)" class="flex items-center p-4 space-x-4 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors">
+            <img [ngSrc]="match.imageUrl" width="64" height="64" class="rounded-full object-cover" [alt]="match.name">
+            <div class="flex-grow overflow-hidden">
+              <div class="flex justify-between items-center">
+                <h2 class="font-bold text-lg text-gray-900 dark:text-gray-100">{{ match.name }}</h2>
+                @if (match.lastMessageTimestamp) {
+                  <span class="text-xs text-gray-500 dark:text-gray-400 flex-shrink-0 ml-2">{{ match.lastMessageTimestamp | date:'shortTime' }}</span>
+                }
+              </div>
+              <p class="text-gray-600 dark:text-gray-300 truncate">{{ match.lastMessage || '¡Haz match! Empieza a chatear.' }}</p>
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="text-center text-gray-500 dark:text-gray-400 p-8 mt-16">
+        <i class="fa-solid fa-comments text-6xl mb-4"></i>
+        <h2 class="text-2xl font-bold mb-2">Sin Mensajes Aún</h2>
+        <p>Cuando hagas match con otras mascotas, tus conversaciones aparecerán aquí.</p>
+      </div>
+    }
+  </main>
+</div>
